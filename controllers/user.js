@@ -73,8 +73,10 @@ exports.signupPost = function(req, res, next) {
   if (errors) {
     return res.status(400).send(errors);
   }
+  console.log("GETTING USER")
 
   User.findOne({ email: req.body.email }, function(err, user) {
+    console.log("USER RETURNED", err, user)
     if (user) {
     return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
     }
@@ -87,6 +89,7 @@ exports.signupPost = function(req, res, next) {
     res.send({ token: generateToken(user), user: user });
     });
   });
+
 };
 
 
@@ -161,7 +164,7 @@ exports.unlink = function(req, res, next) {
         break;
       case 'github':
           user.github = undefined;
-        break;      
+        break;
       default:
         return res.status(400).send({ msg: 'Invalid OAuth Provider' });
     }
